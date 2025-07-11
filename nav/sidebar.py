@@ -24,24 +24,7 @@ def TopBar(page: ft.Page, height=55, bg_color="#4682B4", top_bar_ref=None):
     # Logo (placeholder)
     logo = ft.Text("Asset Management", color=ft.Colors.WHITE, size=20)
 
-    # Search bar
-    # search_bar = ft.Container(
-    #     content=ft.TextField(
-    #         hint_text="Lookup by Asset Tag",
-    #         width=200,
-    #         height=35,
-    #         bgcolor=ft.Colors.WHITE,
-    #         border=ft.border.all(1, ft.Colors.GREY_300),
-    #         border_radius=5,
-    #         prefix_icon=ft.Icons.SEARCH,
-    #         text_size=14,
-    #         content_padding=ft.padding.symmetric(vertical=0, horizontal=10),
-    #         visible=True,
-    #     ),
-    #     width=200,
-    # )
-
-    # Icons and user profile
+   
     user = page.session.get("user")
     user_name = user.get("name", "Guest") if user else "Guest"
     is_admin = user.get("can_login", 0) == 1 if user else False
@@ -176,66 +159,12 @@ def TopBar(page: ft.Page, height=55, bg_color="#4682B4", top_bar_ref=None):
                         on_click=lambda e: page.go("/saleforce") if user and is_admin else None,
                         disabled=not user or not is_admin,
                     ),
-                    ft.MenuItemButton(
-                        content=ft.Text("Departments"),
-                        leading=ft.Icon(ft.Icons.HDR_OFF_SELECT_OUTLINED),
-                        style=ft.ButtonStyle(
-                            bgcolor={ft.ControlState.HOVERED: ft.Colors.BLUE_100}
-                        ),
-                        on_click=lambda e: page.go("/department") if user and is_admin else None,
-                        disabled=not user or not is_admin,
-                    ),
+                    
                 ],
             ),
         ],
     )
 
-    # settingbar = ft.MenuBar(
-    #     style=ft.MenuStyle(
-    #         alignment=ft.alignment.top_left,
-    #         bgcolor=ft.Colors.GREEN,
-    #         mouse_cursor={
-    #             ft.ControlState.HOVERED: ft.MouseCursor.ALIAS,
-    #             ft.ControlState.DEFAULT: ft.MouseCursor.BASIC,
-    #         },
-    #     ),
-    #     controls=[
-    #         ft.SubmenuButton(
-    #             content=ft.Text("Setting"),
-    #             controls=[
-    #                 ft.MenuItemButton(
-    #                     content=ft.Text("Profile"),
-    #                     leading=ft.Icon(ft.Icons.PERSON),
-    #                     style=ft.ButtonStyle(
-    #                         bgcolor={ft.ControlState.HOVERED: ft.Colors.BLUE_100}
-    #                     ),
-    #                     on_click=lambda e: page.go("/profile") if user else None,
-    #                     disabled=not user,
-    #                 ),
-    #                 ft.MenuItemButton(
-    #                     content=ft.Text("Settings"),
-    #                     leading=ft.Icon(ft.Icons.SETTINGS),
-    #                     style=ft.ButtonStyle(
-    #                         bgcolor={ft.ControlState.HOVERED: ft.Colors.BLUE_100}
-    #                     ),
-    #                     on_click=lambda e: page.go("/settings") if user else None,
-    #                     disabled=not user,
-    #                 ),
-    #                 ft.MenuItemButton(
-    #                     content=ft.Text("Notifications"),
-    #                     leading=ft.Icon(ft.Icons.NOTIFICATIONS),
-    #                     style=ft.ButtonStyle(
-    #                         bgcolor={ft.ControlState.HOVERED: ft.Colors.BLUE_100}
-    #                     ),
-    #                     on_click=lambda e: page.go("/notifications") if user else None,
-    #                     disabled=not user,
-    #                 ),
-    #             ],
-    #         ),
-    #     ],
-    # )
-
-    # Layout with the menu bar below the top bar elements
     return ft.Container(
         bgcolor=bg_color,
         padding=ft.padding.symmetric(vertical=10, horizontal=15),
