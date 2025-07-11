@@ -18,7 +18,7 @@ class PrintersPage(ft.Container):
         self.dialog = ft.AlertDialog(
             modal=True,
             title=ft.Text(""),
-            content=ft.Container(width=400, height=300, content=ft.Column(controls=[], spacing=20)),
+            content=ft.Container(width=400, height=400, content=ft.Column(controls=[], spacing=20)),
             actions=[],
             bgcolor=ft.Colors.WHITE,
             content_padding=ft.padding.all(20),
@@ -208,6 +208,11 @@ class PrintersPage(ft.Container):
             ft.TextField(label="Location", value="Office", border_color=ft.Colors.BLUE_200),
             ft.Dropdown(
                 label="Department",
+                border=ft.InputBorder.UNDERLINE,
+                enable_filter=True,
+                editable=True,
+                menu_height=200,
+                leading_icon=ft.Icons.SEARCH,
                 options=[ft.dropdown.Option(key=str(d["id"]), text=d["name"]) for d in departments],
                 border_color=ft.Colors.BLUE_200
             ),
@@ -281,6 +286,10 @@ class PrintersPage(ft.Container):
                 ft.TextField(label="Location", value=printer["location"], border_color=ft.Colors.BLUE_200),
                 ft.Dropdown(
                     label="Department",
+                    border=ft.InputBorder.UNDERLINE,
+                    enable_filter=True,
+                    editable=True,
+                    leading_icon=ft.Icons.SEARCH,
                     options=[ft.dropdown.Option(key=str(d["id"]), text=d["name"]) for d in departments],
                     value=str(printer["department_id"]) if printer["department_id"] else None,
                     border_color=ft.Colors.BLUE_200

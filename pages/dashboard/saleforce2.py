@@ -21,8 +21,15 @@ class SaleForce2(ft.Container):
         self.add_device_button = ft.ElevatedButton(
             text="Add Device",
             icon=ft.Icons.ADD,
-            bgcolor=ft.Colors.BLUE_300,
+            bgcolor=ft.Colors.TEAL_600,
             color=ft.Colors.WHITE,
+            elevation=4,
+            style=ft.ButtonStyle(
+                shape=ft.RoundedRectangleBorder(radius=12),
+                overlay_color=ft.Colors.TEAL_700
+            ),
+            width=160,
+            height=50,
             on_click=lambda e: self.saleforce_dialog.open()
         )
 
@@ -60,7 +67,8 @@ class SaleForce2(ft.Container):
                         ft.Text("Device Management", size=24, weight=ft.FontWeight.BOLD, color=ft.Colors.BLUE_900),
                         self.add_device_button
                     ],
-                    alignment=ft.MainAxisAlignment.SPACE_BETWEEN
+                    alignment=ft.MainAxisAlignment.START,
+                    spacing=20,
                 ),
                 self.tabs
             ],

@@ -397,24 +397,28 @@ class UsersAndDepartmentsPage(ft.Container):
         self.page.dialog = ft.AlertDialog(
             modal=True,
             title=ft.Text("Add New"),
-            content=ft.Column(
-                controls=[
-                    ft.ElevatedButton(
-                        "Add User",
-                        icon=ft.Icons.PERSON,
-                        bgcolor=ft.Colors.BLUE_400,
-                        color=ft.Colors.WHITE,
-                        on_click=lambda e: self.user_dialog.open()
-                    ),
-                    ft.ElevatedButton(
-                        "Add Department",
-                        icon=ft.Icons.BUSINESS,
-                        bgcolor=ft.Colors.YELLOW_600,
-                        color=ft.Colors.WHITE,
-                        on_click=lambda e: self.department_dialog.open()
-                    ),
-                ],
-                spacing=20,
+            content=ft.Container(
+                content=ft.Column(
+                    controls=[
+                        ft.ElevatedButton(
+                            "Add User",
+                            icon=ft.Icons.PERSON,
+                            bgcolor=ft.Colors.BLUE_400,
+                            color=ft.Colors.WHITE,
+                            on_click=lambda e: self.user_dialog.open()
+                        ),
+                        ft.ElevatedButton(
+                            "Add Department",
+                            icon=ft.Icons.BUSINESS,
+                            bgcolor=ft.Colors.YELLOW_600,
+                            color=ft.Colors.WHITE,
+                            on_click=lambda e: self.department_dialog.open()
+                        ),
+                    ],
+                    spacing=20,
+                ),
+                width= 300,
+                height=200,
             ),
             actions=[
                 ft.TextButton("Cancel", on_click=self.close_dialog)

@@ -11,30 +11,21 @@ def recreate_database():
         )
         cursor = connection.cursor()
 
-        # Create job_cards table
-        create_job_cards_table = """
-        CREATE TABLE IF NOT EXISTS job_cards (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            title VARCHAR(255) NOT NULL,
-            description TEXT,
-            status ENUM('Open', 'Closed') DEFAULT 'Open',
-            asset_id INT,
-            FOREIGN KEY (asset_id) REFERENCES assets(id)
-        );
-        """
-        cursor.execute(create_job_cards_table)
+        # Alter asset_images table to add last_sync column
+        cursor.execute("ALTER TABLE asset_images ADD COLUMN last_sync DATETIME;")
+        print("Column 'last_sync' added to 'asset_images' table.")
 
-        # Commit changes
-        connection.commit()
-        print("job_cards table created successfully.")
+        # Alter asset_bills table to add last_sync column
+        cursor.execute("ALTER TABLE asset_bills ADD COLUMN last_sync DATETIME;")
+        print("Column 'last_sync' added to 'asset_bills' table.")
 
     except mysql.connector.Error as err:
         print(f"Error: {err}")
     finally:
-        if cursor:
+        if 'cursor' in locals():
             cursor.close()
-        if connection:
+        if 'connection' in locals():
             connection.close()
 
-# Call the function to create the table
+# Call the function to alter the tables
 recreate_database()

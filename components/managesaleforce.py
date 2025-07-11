@@ -33,6 +33,10 @@ class ManageSaleDialog:
         )
         self.device_status = ft.Dropdown(
             label="Device Status",
+            border=ft.InputBorder.UNDERLINE,
+            enable_filter=True,
+            editable=True,
+            leading_icon=ft.Icons.SEARCH,
             options=[
                 ft.dropdown.Option("Available"),
                 ft.dropdown.Option("Deployed"),

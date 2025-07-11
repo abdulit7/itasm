@@ -51,8 +51,15 @@ class Consumables(ft.Container):
         self.add_button = ft.ElevatedButton(
             "Add Consumable",
             icon=ft.Icons.ADD,
-            bgcolor=ft.Colors.BLUE_200,
+            bgcolor=ft.Colors.TEAL_600,
             color=ft.Colors.WHITE,
+            elevation=4,
+            style=ft.ButtonStyle(
+                shape=ft.RoundedRectangleBorder(radius=12),
+                overlay_color=ft.Colors.TEAL_700
+            ),
+            width=160,
+            height=50,
             on_click=self.show_add_form
         )
         self.tabs = ft.Tabs(
@@ -73,7 +80,7 @@ class Consumables(ft.Container):
                 ft.Divider(height=1, color=ft.Colors.GREY_300),
                 ft.Row(
                     controls=[
-                        ft.Text("Consumables Management", size=24, weight=ft.FontWeight.BOLD, color=ft.Colors.BLUE_900),
+                        ft.Text("Consumables", size=24, weight=ft.FontWeight.BOLD, color=ft.Colors.BLUE_900),
                         self.add_button
                     ],
                     alignment=ft.MainAxisAlignment.SPACE_BETWEEN

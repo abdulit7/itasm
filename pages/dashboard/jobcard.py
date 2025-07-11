@@ -1,3 +1,6 @@
+
+import os
+os.environ["FLET_SECRET_KEY"] = "mysecret123"
 import flet as ft
 import mysql.connector
 from mysql.connector import Error
@@ -22,8 +25,15 @@ class JobCardPage(ft.Container):
         self.add_job_card_button = ft.ElevatedButton(
             text="Create Job Card",
             icon=ft.Icons.ADD,
-            bgcolor=ft.Colors.BLUE_300,
+            bgcolor=ft.Colors.GREEN_600,
             color=ft.Colors.WHITE,
+            elevation=4,
+            style=ft.ButtonStyle(
+                shape=ft.RoundedRectangleBorder(radius=12),
+                overlay_color=ft.Colors.TEAL_700
+            ),
+            width=160,
+            height=50,
             on_click=self.open_job_card_dialog
         )
 
@@ -46,7 +56,6 @@ class JobCardPage(ft.Container):
                         ft.Text("Job Card Management", size=24, weight=ft.FontWeight.BOLD, color=ft.Colors.BLUE_900),
                         self.add_job_card_button
                     ],
-                    alignment=ft.MainAxisAlignment.SPACE_BETWEEN
                 ),
                 self.tabs
             ],
@@ -247,9 +256,9 @@ class JobCardPage(ft.Container):
         )
 
     def create_job_card_card(self, job_card):
-        created_date = job_card.get('created_date', 'N/A').strftime('%Y-%m-%d') if job_card.get('created_date') else 'N/A'
-        started_date = job_card.get('started_date', 'N/A').strftime('%Y-%m-%d') if job_card.get('started_date') else 'N/A'
-        completed_date = job_card.get('completed_date', 'N/A').strftime('%Y-%m-%d') if job_card.get('completed_date') else 'N/A'
+        created_date = job_card.get('created_date', 'N/A').strftime('%Y-%m-%d %H:%M:%S') if job_card.get('created_date') else 'N/A'
+        started_date = job_card.get('started_date', 'N/A').strftime('%Y-%m-%d %H:%M:%S') if job_card.get('started_date') else 'N/A'
+        completed_date = job_card.get('completed_date', 'N/A').strftime('%Y-%m-%d %H:%M:%S') if job_card.get('completed_date') else 'N/A'
 
         card_content = ft.Column(
             controls=[
@@ -278,7 +287,14 @@ class JobCardPage(ft.Container):
                             bgcolor=ft.Colors.GREEN_300,
                             color=ft.Colors.WHITE,
                             on_click=lambda e, jc=job_card: self.open_complete_dialog(jc),
-                            disabled=job_card['status'].lower() == 'completed'
+                            disabled=job_card['status'].lower() in ['completed', 'open']
+                        ),
+                        ft.ElevatedButton(
+                            text="View Details",
+                            icon=ft.Icons.VISIBILITY,
+                            bgcolor=ft.Colors.BLUE_300,
+                            color=ft.Colors.WHITE,
+                            on_click=lambda e, jc=job_card: self.show_job_card_detail(jc)
                         )
                     ],
                     alignment=ft.MainAxisAlignment.END,
@@ -294,41 +310,72 @@ class JobCardPage(ft.Container):
                 padding=15,
                 bgcolor=ft.Colors.BLUE_50,
                 border_radius=12,
-                ink=True
+                ink=True,
+                on_click=lambda e, jc=job_card: self.show_job_card_detail(jc)
             ),
             elevation=5
         )
 
     def show_job_card_detail(self, job_card):
-        created_date = job_card.get('created_date', 'N/A').strftime('%Y-%m-%d') if job_card.get('created_date') else 'N/A'
-        started_date = job_card.get('started_date', 'N/A').strftime('%Y-%m-%d') if job_card.get('started_date') else 'N/A'
-        completed_date = job_card.get('completed_date', 'N/A').strftime('%Y-%m-%d') if job_card.get('completed_date') else 'N/A'
+        created_date = job_card.get('created_date', 'N/A').strftime('%Y-%m-%d %H:%M:%S') if job_card.get('created_date') else 'N/A'
+        started_date = job_card.get('started_date', 'N/A').strftime('%Y-%m-%d %H:%M:%S') if job_card.get('started_date') else 'N/A'
+        completed_date = job_card.get('completed_date', 'N/A').strftime('%Y-%m-%d %H:%M:%S') if job_card.get('completed_date') else 'N/A'
 
         dialog_content = ft.Column(
             controls=[
-                ft.Text(f"Job Number: {job_card['job_number']}", size=16, weight=ft.FontWeight.BOLD),
-                ft.Text(f"Title: {job_card['title']}", size=14),
-                ft.Text(f"Description: {job_card['description']}", size=14),
-                ft.Text(f"Department: {job_card.get('department', 'N/A')}", size=14),
-                ft.Text(f"Entity: {job_card.get('entity_info', 'N/A')}", size=14),
-                ft.Text(f"Closure Details: {job_card.get('closure_details', 'N/A')}", size=14),
-                ft.Text(f"Created: {created_date}", size=14),
-                ft.Text(f"Started: {started_date}", size=14),
-                ft.Text(f"Completed: {completed_date}", size=14),
-                ft.Text(f"Status: {job_card['status']}", size=14)
+                ft.Text(f"Job Number: {job_card['job_number']}", size=16, weight=ft.FontWeight.BOLD, color=ft.Colors.PINK_600),
+                ft.Text(f"Title: {job_card['title']}", size=14, color=ft.Colors.ORANGE_600),
+                ft.Text(f"Description: {job_card['description']}", size=14, color=ft.Colors.PURPLE_600),
+                ft.Text(f"Department: {job_card.get('department', 'N/A')}", size=14, color=ft.Colors.TEAL_600),
+                ft.Text(f"Entity: {job_card.get('entity_info', 'N/A')}", size=14, color=ft.Colors.AMBER_600),
+                ft.Text(f"Closure Details: {job_card.get('closure_details', 'N/A')}", size=14, color=ft.Colors.DEEP_ORANGE_600),
+                ft.Text(f"Created: {created_date}", size=14, color=ft.Colors.LIGHT_GREEN_600),
+                ft.Text(f"Started: {started_date}", size=14, color=ft.Colors.CYAN_600),
+                ft.Text(f"Completed: {completed_date}", size=14, color=ft.Colors.INDIGO_600),
+                ft.Text(f"Status: {job_card['status']}", size=14, color=ft.Colors.DEEP_PURPLE_600)
             ],
-            spacing=10
+            spacing=10,
+            scroll=ft.ScrollMode.AUTO
         )
 
         dialog = ft.AlertDialog(
-            title=ft.Text(f"Job Card Details (ID: {job_card['id']})", size=20, weight=ft.FontWeight.BOLD),
-            content=ft.Container(content=dialog_content, padding=10, width=300),
-            actions=[ft.TextButton("Close", on_click=self.close_dialog)],
-            actions_alignment=ft.MainAxisAlignment.END
+            modal=True,
+            title=ft.Text(f"Job Card Details (ID: {job_card['id']})", size=20, weight=ft.FontWeight.BOLD, color=ft.Colors.RED_700, font_family="Roboto"),
+            content=ft.Container(
+                content=dialog_content,
+                width=400,
+                height=600,
+                padding=ft.padding.all(20),
+                bgcolor=ft.Colors.YELLOW_50,
+                border_radius=ft.border_radius.all(15)
+            ),
+            actions=[
+                ft.TextButton(
+                    "Close",
+                    on_click=self.close_dialog,
+                    style=ft.ButtonStyle(
+                        bgcolor=ft.Colors.PINK_500,
+                        color=ft.Colors.WHITE,
+                        elevation=4,
+                        shape=ft.RoundedRectangleBorder(radius=8),
+                        overlay_color=ft.Colors.PINK_700
+                    )
+                )
+            ],
+            actions_alignment=ft.MainAxisAlignment.END,
+            bgcolor=ft.LinearGradient(
+                begin=ft.alignment.top_left,
+                end=ft.alignment.bottom_right,
+                colors=[ft.Colors.ORANGE_300, ft.Colors.YELLOW_100]
+            ),
+            content_padding=ft.padding.all(0),
+            shape=ft.RoundedRectangleBorder(radius=15),
+            barrier_color=ft.Colors.BLACK54
         )
 
         self.page.dialog = dialog
         dialog.open = True
+        self.page.overlay.append(dialog)
         self.page.update()
 
     def close_dialog(self, e):
@@ -337,22 +384,25 @@ class JobCardPage(ft.Container):
             self.page.update()
 
     def open_job_card_dialog(self, e=None):
-        self.job_title = ft.TextField(label="Job Title", hint_text="Enter job title", border_color=ft.Colors.BLUE_200)
-        self.job_description = ft.TextField(label="Description", hint_text="Enter job description", multiline=True, border_color=ft.Colors.BLUE_200)
+        self.job_title = ft.TextField(label="Job Title", hint_text="Enter job title", border_color=ft.Colors.PURPLE_200, color=ft.Colors.PURPLE_900)
+        self.job_description = ft.TextField(label="Description", hint_text="Enter job description", multiline=True, border_color=ft.Colors.PURPLE_200, color=ft.Colors.PURPLE_900)
         self.department_dropdown = ft.Dropdown(
+            border=ft.InputBorder.UNDERLINE,
+            enable_filter=True,
+            editable=True,
+            leading_icon=ft.Icons.SEARCH,
+            menu_height=200,
             label="Department",
             options=[ft.dropdown.Option(key=str(d['id']), text=d['name']) for d in self.departments],
             value=str(self.departments[0]['id']) if self.departments else None,
-            border_color=ft.Colors.BLUE_200
+            border_color=ft.Colors.PURPLE_200,
+            color=ft.Colors.PURPLE_900
         )
 
         self.dialog = ft.AlertDialog(
             modal=True,
-            bgcolor=ft.Colors.GREEN_ACCENT_100,
-            title=ft.Text("Create Job Card", color=ft.Colors.BLUE_800),
+            title=ft.Text("Create Job Card", color=ft.Colors.PURPLE_800, size=20, weight=ft.FontWeight.BOLD, font_family="Roboto"),
             content=ft.Container(
-                width=400,
-                height=600,
                 content=ft.Column(
                     controls=[
                         self.job_title,
@@ -360,17 +410,47 @@ class JobCardPage(ft.Container):
                         self.department_dropdown
                     ],
                     spacing=10,
-                    scroll=ft.ScrollMode.AUTO,
+                    scroll=ft.ScrollMode.AUTO
                 ),
-                padding=20
+                width=400,
+                height=600,
+                padding=ft.padding.all(20),
+                bgcolor=ft.Colors.LIGHT_BLUE_50,
+                border_radius=ft.border_radius.all(15)
             ),
             actions=[
-                ft.TextButton("Cancel", on_click=self.close_dialog),
-                ft.TextButton("Save", on_click=self.save_job_card)
+                ft.TextButton(
+                    "Cancel",
+                    on_click=self.close_dialog,
+                    style=ft.ButtonStyle(
+                        bgcolor=ft.Colors.RED_500,
+                        color=ft.Colors.WHITE,
+                        elevation=4,
+                        shape=ft.RoundedRectangleBorder(radius=8),
+                        overlay_color=ft.Colors.RED_700
+                    )
+                ),
+                ft.TextButton(
+                    "Save",
+                    on_click=self.save_job_card,
+                    style=ft.ButtonStyle(
+                        bgcolor=ft.Colors.GREEN_700,
+                        color=ft.Colors.WHITE,
+                        elevation=4,
+                        shape=ft.RoundedRectangleBorder(radius=8),
+                        overlay_color=ft.Colors.GREEN_900
+                    )
+                )
             ],
             actions_alignment=ft.MainAxisAlignment.END,
-            content_padding=ft.padding.all(20),
-            shape=ft.RoundedRectangleBorder(radius=10)
+            bgcolor=ft.LinearGradient(
+                begin=ft.alignment.top_left,
+                end=ft.alignment.bottom_right,
+                colors=[ft.Colors.PURPLE_200, ft.Colors.LIGHT_BLUE_100]
+            ),
+            content_padding=ft.padding.all(0),
+            shape=ft.RoundedRectangleBorder(radius=15),
+            barrier_color=ft.Colors.BLACK54
         )
         self.page.dialog = self.dialog
         self.dialog.open = True
@@ -405,7 +485,7 @@ class JobCardPage(ft.Container):
             cursor.execute("""
                 INSERT INTO job_cards (job_number, title, description, status, created_date, department_id)
                 VALUES (%s, %s, %s, %s, %s, %s)
-            """, (job_number, title, description, "Open", datetime.now().strftime('%Y-%m-%d'), department_id))
+            """, (job_number, title, description, "Open", datetime.now().strftime('%Y-%m-%d %H:%M:%S'), department_id))
 
             conn.commit()
             self.show_snack_bar("Job card created successfully!", ft.Colors.GREEN_800)
@@ -435,7 +515,7 @@ class JobCardPage(ft.Container):
                 UPDATE job_cards 
                 SET status = 'Started', started_date = %s
                 WHERE id = %s
-            """, (datetime.now().strftime('%Y-%m-%d'), job_card['id']))
+            """, (datetime.now().strftime('%Y-%m-%d %H:%M:%S'), job_card['id']))
             conn.commit()
             self.show_snack_bar("Job card started successfully!", ft.Colors.GREEN_800)
             self.load_job_cards()
@@ -452,10 +532,15 @@ class JobCardPage(ft.Container):
             label="Completion Details",
             hint_text="Enter what was done, parts used",
             multiline=True,
-            border_color=ft.Colors.BLUE_200
+            border_color=ft.Colors.DEEP_ORANGE_200,
+            color=ft.Colors.DEEP_ORANGE_900
         )
         self.entity_type_dropdown = ft.Dropdown(
             label="Entity Type",
+            border=ft.InputBorder.UNDERLINE,
+            enable_filter=True,
+            editable=True,
+            leading_icon=ft.Icons.SEARCH,
             options=[
                 ft.dropdown.Option("Asset"),
                 ft.dropdown.Option("Consumable"),
@@ -464,44 +549,77 @@ class JobCardPage(ft.Container):
             ],
             value=None,
             on_change=self.update_entity_dropdown,
-            border_color=ft.Colors.BLUE_200
+            border_color=ft.Colors.DEEP_ORANGE_200,
+            color=ft.Colors.DEEP_ORANGE_900
         )
         self.entity_dropdown = ft.Dropdown(
             label="Select Deployed Entity",
+            border=ft.InputBorder.UNDERLINE,
+            enable_filter=True,
+            editable=True,
+            leading_icon=ft.Icons.SEARCH,
             options=[],
             value=None,
-            border_color=ft.Colors.BLUE_200
+            border_color=ft.Colors.DEEP_ORANGE_200,
+            color=ft.Colors.DEEP_ORANGE_900
         )
 
         self.load_deployed_entities()
 
         self.dialog = ft.AlertDialog(
             modal=True,
-            title=ft.Text("Complete Job Card", color=ft.Colors.BLUE_800),
-           
+            title=ft.Text("Complete Job Card", color=ft.Colors.DEEP_ORANGE_800, size=20, weight=ft.FontWeight.BOLD, font_family="Roboto"),
             content=ft.Container(
-                width=400,
-                height=600,
                 content=ft.Column(
                     controls=[
-                        ft.Text(f"Job Number: {job_card['job_number']}"),
-                        ft.Text(f"Title: {job_card['title']}"),
+                        ft.Text(f"Job Number: {job_card['job_number']}", color=ft.Colors.DEEP_ORANGE_600),
+                        ft.Text(f"Title: {job_card['title']}", color=ft.Colors.AMBER_600),
                         self.complete_details,
                         self.entity_type_dropdown,
                         self.entity_dropdown
                     ],
-                    spacing=10
+                    spacing=10,
+                    scroll=ft.ScrollMode.AUTO
                 ),
-                padding=20
+                width=400,
+                height=600,
+                padding=ft.padding.all(20),
+                bgcolor=ft.Colors.ORANGE_50,
+                border_radius=ft.border_radius.all(15)
             ),
             actions=[
-                ft.TextButton("Cancel", on_click=self.close_dialog),
-                ft.TextButton("Save", on_click=lambda e: self.complete_job_card(job_card))
+                ft.TextButton(
+                    "Cancel",
+                    on_click=self.close_dialog,
+                    style=ft.ButtonStyle(
+                        bgcolor=ft.Colors.BLUE_500,
+                        color=ft.Colors.WHITE,
+                        elevation=4,
+                        shape=ft.RoundedRectangleBorder(radius=8),
+                        overlay_color=ft.Colors.BLUE_700
+                    )
+                ),
+                ft.TextButton(
+                    "Save",
+                    on_click=lambda e: self.complete_job_card(job_card),
+                    style=ft.ButtonStyle(
+                        bgcolor=ft.Colors.TEAL_700,
+                        color=ft.Colors.WHITE,
+                        elevation=4,
+                        shape=ft.RoundedRectangleBorder(radius=8),
+                        overlay_color=ft.Colors.TEAL_900
+                    )
+                )
             ],
             actions_alignment=ft.MainAxisAlignment.END,
-            bgcolor=ft.Colors.CYAN_ACCENT,
-            content_padding=ft.padding.all(20),
-            shape=ft.RoundedRectangleBorder(radius=10)
+            bgcolor=ft.LinearGradient(
+                begin=ft.alignment.top_left,
+                end=ft.alignment.bottom_right,
+                colors=[ft.Colors.AMBER_300, ft.Colors.ORANGE_100]
+            ),
+            content_padding=ft.padding.all(0),
+            shape=ft.RoundedRectangleBorder(radius=15),
+            barrier_color=ft.Colors.BLACK54
         )
         self.page.dialog = self.dialog
         self.dialog.open = True
@@ -561,7 +679,7 @@ class JobCardPage(ft.Container):
                 UPDATE job_cards 
                 SET status = 'Completed', completed_date = %s, closure_details = %s, entity_type = %s, entity_id = %s
                 WHERE id = %s
-            """, (datetime.now().strftime('%Y-%m-%d'), details, entity_type, entity_id if entity_id else None, job_card['id']))
+            """, (datetime.now().strftime('%Y-%m-%d %H:%M:%S'), details, entity_type, entity_id if entity_id else None, job_card['id']))
 
             # Log to asset_history
             cursor.execute("""

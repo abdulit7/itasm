@@ -1930,6 +1930,7 @@ def recreate_database():
             asset_id INT NOT NULL,
             image_name VARCHAR(255) NOT NULL,
             image_data LONGBLOB NOT NULL,
+            last_sync DATETIME
             FOREIGN KEY (asset_id) REFERENCES assets(id) ON DELETE CASCADE
         );
         """
@@ -1942,6 +1943,7 @@ def recreate_database():
             asset_id INT NOT NULL,
             bill_name VARCHAR(255) NOT NULL,
             bill_data LONGBLOB NOT NULL,
+            last_sync DATETIME
             FOREIGN KEY (asset_id) REFERENCES assets(id) ON DELETE CASCADE
         );
         """
@@ -1986,22 +1988,22 @@ def recreate_database():
 
         # Create job_cards table
         create_job_cards_table = """
-        CREATE TABLE job_cards (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            job_number VARCHAR(20) NOT NULL UNIQUE,
-            title VARCHAR(255) NOT NULL,
-            description TEXT,
-            status ENUM('Open', 'Started', 'Completed') NOT NULL DEFAULT 'Open',
-            created_date DATE,
-            started_date DATE,
-            completed_date DATE,
-            department_id INT NOT NULL,
-            entity_type ENUM('Asset', 'Consumable', 'Component', 'Device'),
-            entity_id INT,
-            closure_details TEXT,
-            FOREIGN KEY (department_id) REFERENCES department(id) ON DELETE RESTRICT
-        );
-        """
+            CREATE TABLE job_cards (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                job_number VARCHAR(20) NOT NULL UNIQUE,
+                title VARCHAR(255) NOT NULL,
+                description TEXT,
+                status ENUM('Open', 'Started', 'Completed') NOT NULL DEFAULT 'Open',
+                created_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                started_date DATETIME,
+                completed_date DATETIME,
+                department_id INT NOT NULL,
+                entity_type ENUM('Asset', 'Consumable', 'Component', 'Device'),
+                entity_id INT,
+                closure_details TEXT,
+                FOREIGN KEY (department_id) REFERENCES department(id) ON DELETE RESTRICT
+            );
+            """
         cursor.execute(create_job_cards_table)
 
         # Commit changes

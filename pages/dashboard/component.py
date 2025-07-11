@@ -60,15 +60,32 @@ class Component(ft.Container):
         self.add_component = ft.ElevatedButton(
             "Add Component",
             icon=ft.Icons.ADD,
-            bgcolor=ft.Colors.BLUE_300,
+            bgcolor=ft.Colors.TEAL_600,
             color=ft.Colors.WHITE,
+            elevation=4,
+            style=ft.ButtonStyle(
+                shape=ft.RoundedRectangleBorder(radius=12),
+                overlay_color=ft.Colors.TEAL_700
+            ),
+            width=160,
+            height=50,
             on_click=lambda e: self.add_component_dialog.open_dialog()
         )
 
         self.component_detail = ft.AlertDialog(
             modal=True,
             title=ft.Text("Component Details"),
-            content=ft.Text("Details of the component will be displayed here."),
+            content=ft.Container(
+                width=400,
+                height=600,
+                content=ft.Column(
+                    controls=[
+                        ft.Text("Details of the component will be displayed here.")
+                    ],
+                    expand=True  # Ensures the Column expands to fill the Container
+                ),
+                expand=True  # Ensures the Container respects the specified height
+            ),
             actions=[
                 ft.TextButton("Close", on_click=lambda e: self.close_component_detail(e))
             ],
@@ -176,10 +193,11 @@ class Component(ft.Container):
                 ft.Divider(height=1, color=ft.Colors.WHITE),
                 ft.Row(
                     controls=[
-                        ft.Text("Device Management", size=24, weight=ft.FontWeight.BOLD, color="#263238"),
+                        ft.Text("Components", size=24, weight=ft.FontWeight.BOLD, color="#263238"),
                         self.add_component
                     ],
-                    alignment=ft.MainAxisAlignment.SPACE_BETWEEN
+                    alignment=ft.MainAxisAlignment.START,
+                    spacing=20,
                 ),
                 self.tabs,
             ],

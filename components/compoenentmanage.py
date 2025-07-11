@@ -31,6 +31,10 @@ class ComponentManage:
         )
         self.component_status = ft.Dropdown(
             label="Component Status",
+            border=ft.InputBorder.UNDERLINE,
+            enable_filter=True,
+            editable=True,
+            leading_icon=ft.Icons.SEARCH,
             options=[
                 ft.dropdown.Option("Available"),
                 ft.dropdown.Option("Deployed"),
@@ -41,6 +45,10 @@ class ComponentManage:
         )
         self.select_deployed_type = ft.Dropdown(
             label="Deployed Type",
+            border=ft.InputBorder.UNDERLINE,
+            enable_filter=True,
+            editable=True,
+            leading_icon=ft.Icons.SEARCH,
             options=[
                 ft.dropdown.Option("User"),
                 ft.dropdown.Option("Department"),
@@ -61,6 +69,10 @@ class ComponentManage:
         )
         self.select_asset = ft.Dropdown(
             label="Select Asset",
+            border=ft.InputBorder.UNDERLINE,
+            enable_filter=True,
+            editable=True,
+            leading_icon=ft.Icons.SEARCH,
             options=[],
             visible=False
         )

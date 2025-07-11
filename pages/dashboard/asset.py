@@ -1,3 +1,4 @@
+
 import os
 os.environ["FLET_SECRET_KEY"] = "mysecret123"
 import flet as ft
@@ -25,8 +26,15 @@ class AssetPage(ft.Container):
         self.add_asset_button = ft.ElevatedButton(
             text="Add Asset",
             icon=ft.Icons.ADD,
-            bgcolor=ft.Colors.BLUE_300,
+            bgcolor=ft.Colors.TEAL_600,
             color=ft.Colors.WHITE,
+            elevation=4,
+            style=ft.ButtonStyle(
+                shape=ft.RoundedRectangleBorder(radius=12),
+                overlay_color=ft.Colors.TEAL_700
+            ),
+            width=160,
+            height=50,
             on_click=lambda e: self.add_asset_dialog.open_dialog()
         )
 
@@ -49,7 +57,6 @@ class AssetPage(ft.Container):
                         ft.Text("Asset Management", size=24, weight=ft.FontWeight.BOLD, color="#263238"),
                         self.add_asset_button
                     ],
-                    alignment=ft.MainAxisAlignment.SPACE_BETWEEN
                 ),
                 self.tabs,
             ],
@@ -68,23 +75,41 @@ class AssetPage(ft.Container):
             "host": "200.200.200.23",
             "user": "root",
             "password": "Pak@123",
-            "database": "asm_sys"
+            "database": "asm_sys",
+            "buffered": True  # Ensure cursor is buffered to handle results properly
         }
 
         try:
             conn = mysql.connector.connect(**db_config)
-            cursor = conn.cursor(dictionary=True)
-            cursor.execute("SELECT * FROM assets")
-            assets = cursor.fetchall()
+            
+            # Use a new cursor for assets
+            cursor_assets = conn.cursor(dictionary=True, buffered=True)
+            cursor_assets.execute("SELECT * FROM assets")
+            assets = cursor_assets.fetchall()
+            print(f"Fetched {len(assets)} assets")
+            cursor_assets.close()  # Close cursor after fetching
 
             for asset in assets:
-                cursor.execute("SELECT image_data FROM asset_images WHERE asset_id = %s", (asset['id'],))
-                image_result = cursor.fetchone()
-                if image_result and image_result['image_data']:
-                    asset['image_base64'] = base64.b64encode(image_result['image_data']).decode('utf-8')
+                # Use a new cursor for each image query to avoid unread results
+                cursor_images = conn.cursor(dictionary=True, buffered=True)
+                cursor_images.execute("SELECT image_data FROM asset_images WHERE asset_id = %s", (asset['id'],))
+                image_results = cursor_images.fetchall()  # Fetch all rows
+                print(f"Asset ID {asset['id']} has {len(image_results)} images")
+
+                # Consume any additional result sets
+                while cursor_images.nextset() is not None:
+                    pass  # Ignore additional result sets
+
+                cursor_images.close()  # Close cursor after fetching all results
+
+                # Use the first image if multiple exist, or None if no images
+                if image_results and image_results[0]['image_data']:
+                    asset['image_base64'] = base64.b64encode(image_results[0]['image_data']).decode('utf-8')
                 else:
                     asset['image_base64'] = None
                 self.asset_add.append(asset)
+
+            conn.close()  # Close connection after all operations
 
         except Error as e:
             self.page.snack_bar = ft.SnackBar(
@@ -92,10 +117,13 @@ class AssetPage(ft.Container):
                 duration=4000
             )
             self.page.snack_bar.open = True
+            print(f"Error in load_assets: {e}")  # Debug print
             self.page.update()
         finally:
-            if 'cursor' in locals():
-                cursor.close()
+            if 'cursor_assets' in locals():
+                cursor_assets.close()
+            if 'cursor_images' in locals():
+                cursor_images.close()
             if 'conn' in locals():
                 conn.close()
 
@@ -192,6 +220,7 @@ class AssetPage(ft.Container):
 
     def show_asset_detail(self, asset):
         """Display asset details in an AlertDialog."""
+        print(f"Showing details for asset: {asset.get('model', 'Unknown')}")  # Debug print
         image_content = (
             ft.Image(
                 src_base64=asset.get('image_base64'),
@@ -235,7 +264,8 @@ class AssetPage(ft.Container):
             content=ft.Container(
                 content=dialog_content,
                 padding=10,
-                width=300,
+                width=400,
+                height=600,
             ),
             actions=[
                 ft.TextButton("Close", on_click=lambda e: self.close_asset_detail_dialog()),
@@ -245,16 +275,17 @@ class AssetPage(ft.Container):
 
         self.page.dialog = dialog
         dialog.open = True
+        self.page.overlay.append(dialog)  # Ensure dialog is added to the overlay
         self.page.update()
 
     def create_asset_card(self, asset, card_type):
-        status_Colors = {
+        status_colors = {
             'available': ft.Colors.LIGHT_GREEN_ACCENT_400,
             'deployed': ft.Colors.YELLOW_ACCENT_400,
             'dispose': ft.Colors.RED_400,
             'sold': ft.Colors.RED_400
         }
-        status_color = status_Colors.get(asset['status'].lower(), ft.Colors.GREY_400)
+        status_color = status_colors.get(asset['status'].lower(), ft.Colors.GREY_400)
 
         card_height = 400
         image_height = card_height / 3
@@ -359,7 +390,7 @@ class AssetPage(ft.Container):
                 bgcolor="#E3F2FD",
                 border_radius=12,
                 ink=True,
-                on_click=lambda e: self.show_asset_detail(asset),
+                on_click=lambda e, a=asset: self.show_asset_detail(a),
                 width=300,
                 height=card_height
             ),
@@ -368,5 +399,11 @@ class AssetPage(ft.Container):
 
     def close_asset_detail_dialog(self):
         """Close the asset detail dialog."""
-        self.page.dialog.open = False
+        if self.page.dialog:
+            self.page.dialog.open = False
         self.page.update()
+
+    def update(self):
+        """Custom update method to ensure the control is updated."""
+        if self.page is not None:
+            self.page.update()

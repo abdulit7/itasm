@@ -28,6 +28,10 @@ class ConsumableManage(ft.Container):
         )
         self.consumable_status = ft.Dropdown(
             label="Status",
+            border=ft.InputBorder.UNDERLINE,
+            enable_filter=True,
+            editable=True,
+            leading_icon=ft.Icons.SEARCH,
             options=[
                 ft.dropdown.Option("Available"),
                 ft.dropdown.Option("Deployed"),
@@ -38,6 +42,10 @@ class ConsumableManage(ft.Container):
         )
         self.select_printer = ft.Dropdown(
             label="Select Printer",
+            border=ft.InputBorder.UNDERLINE,
+            enable_filter=True,
+            editable=True,
+            leading_icon=ft.Icons.SEARCH,
             options=[],
             border_color=ft.Colors.BLUE_200,
             visible=False

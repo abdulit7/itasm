@@ -55,6 +55,10 @@ class AssetFormManage:
         )
         self.asset_status = ft.Dropdown(
             label="Asset Status",
+            border=ft.InputBorder.UNDERLINE,
+            enable_filter=True,
+            editable=True,
+            leading_icon=ft.Icons.SEARCH,
             options=[
                 ft.dropdown.Option("Available"),
                 ft.dropdown.Option("Deployed"),
@@ -66,6 +70,10 @@ class AssetFormManage:
         )
         self.select_deploye = ft.Dropdown(
             label="Select Deploye",
+            border=ft.InputBorder.UNDERLINE,
+            enable_filter=True,
+            editable=True,
+            leading_icon=ft.Icons.SEARCH,
             options=[
                 ft.dropdown.Option("User"),
                 ft.dropdown.Option("Department"),
@@ -75,22 +83,39 @@ class AssetFormManage:
         )
         self.select_user_department = ft.Dropdown(
             label="Select Department",
+            border=ft.InputBorder.UNDERLINE,
+            enable_filter=True,
+            editable=True,
+            leading_icon=ft.Icons.SEARCH,
+            menu_height=200,
             options=[],
             visible=False,
             on_change=self.department_changed
         )
         self.select_user = ft.Dropdown(
             label="Select User",
+            border=ft.InputBorder.UNDERLINE,
+            enable_filter=True,
+            editable=True,
+            leading_icon=ft.Icons.SEARCH,
             options=[],
             visible=False
         )
         self.select_department = ft.Dropdown(
             label="Select Department",
+            border=ft.InputBorder.UNDERLINE,
+            enable_filter=True,
+            editable=True,
+            leading_icon=ft.Icons.SEARCH,
             options=[],
             visible=False
         )
         self.disposal_options = ft.Dropdown(
             label="Disposal Option",
+            border=ft.InputBorder.UNDERLINE,
+            enable_filter=True,
+            editable=True,
+            leading_icon=ft.Icons.SEARCH,
             options=[
                 ft.dropdown.Option("Dispose"),
                 ft.dropdown.Option("Sold")
@@ -451,3 +476,6 @@ class AssetFormManage:
         finally:
             if 'conn' in locals() and conn.is_connected():
                 conn.close()
+
+
+

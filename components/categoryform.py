@@ -13,6 +13,10 @@ class CatDialog:
         self.name_field = CustomTextField(label="Name", hint_text="Enter category name")
         self.type_field = ft.Dropdown(
             label="Type",
+            border=ft.InputBorder.UNDERLINE,
+            enable_filter=True,
+            editable=True,
+            leading_icon=ft.Icons.SEARCH,
             hint_text="Select category type",
             options=[
                 ft.dropdown.Option("Asset"),
@@ -207,3 +211,6 @@ class CatDialog:
         self.type_field.value = cat_type
         self.dialog.open = True
         self.page.update()
+
+
+

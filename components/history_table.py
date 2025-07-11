@@ -1,3 +1,5 @@
+
+
 import flet as ft
 import mysql.connector
 from datetime import datetime
@@ -123,7 +125,7 @@ class HistoryTable(ft.Container):
                 host="200.200.200.23",
                 user="root",
                 password="Pak@123",
-                database="itasset",
+                database="asm_sys",  # Corrected to asm_sys
                 auth_plugin='mysql_native_password'
             )
             print("Database connection successful")
@@ -134,80 +136,47 @@ class HistoryTable(ft.Container):
             return None
 
     def fetch_history(self):
-        """Fetch history data from assets, deployed_assets, and disposed_assets tables."""
+        """Fetch history data from asset_history table."""
         connection = self._get_db_connection()
         if not connection:
             return
 
         try:
-            cursor = connection.cursor()
+            cursor = connection.cursor(dictionary=True)
 
-            # 1. Fetch "Added" actions from assets table
+            # Fetch history from asset_history table
             cursor.execute(
                 """
-                SELECT name, category_id, purchase_date 
-                FROM assets 
-                WHERE purchase_date IS NOT NULL
+                SELECT table_type, entity_id, data_json, action, action_timestamp 
+                FROM asset_history
+                ORDER BY action_timestamp DESC
                 """
             )
             for row in cursor.fetchall():
-                self.history_data.append({
-                    "action": "Added",
-                    "asset_name": row[0],
-                    "category_id": row[1],
-                    "user_department": "",
-                    "date": row[2],
-                    "details": "New asset added to inventory"
-                })
+                data = row["data_json"]
+                action = row["action"]
+                timestamp = row["action_timestamp"]
 
-            # 2. Fetch "Deployed" actions from deployed_assets table
-            cursor.execute(
-                """
-                SELECT name, category_id, deployed_to, user_department, deploy_date 
-                FROM deployed_assets 
-                WHERE deploy_date IS NOT NULL
-                """
-            )
-            for row in cursor.fetchall():
-                self.history_data.append({
-                    "action": "Deployed",
-                    "asset_name": row[0],
-                    "category_id": row[1],
-                    "user_department": f"{row[3]} (ID: {row[2]})" if row[3] else f"ID: {row[2]}",
-                    "date": row[4],
-                    "details": "Asset deployed to user/department"
-                })
-
-            # 3. Fetch "Scrapped", "Disposed", "Sold" actions from disposed_assets table
-            cursor.execute(
-                """
-                SELECT name, category_id, disposal_type, disposal_date, amount_earned, 
-                       disposal_reason, disposal_location, sale_details, sold_to 
-                FROM disposed_assets 
-                WHERE disposal_date IS NOT NULL
-                """
-            )
-            for row in cursor.fetchall():
-                disposal_type = row[2]
-                details = ""
-                if disposal_type == "Scrap":
-                    details = f"Amount Earned: ${row[4]}" if row[4] is not None else "Scrapped asset"
-                elif disposal_type == "Dispose":
-                    details = f"Reason: {row[5] or 'N/A'}, Location: {row[6] or 'N/A'}"
-                elif disposal_type == "Sold":
-                    details = f"Sold To: {row[8] or 'N/A'}, Amount: ${row[4] or 'N/A'}, Details: {row[7] or 'N/A'}"
+                # Extract relevant details based on table_type
+                if row["table_type"] == "assets":
+                    asset_name = data.get("model", "Unknown Asset")
+                    category_id = None  # Assets don't directly link to category_id; adjust if needed
+                    user_department = data.get("deployed_user_id") or data.get("deployed_department_id", "N/A")
+                    details = data.get("status", "No details")
+                else:
+                    asset_name = "Unknown"
+                    category_id = None
+                    user_department = "N/A"
+                    details = "Not applicable"
 
                 self.history_data.append({
-                    "action": disposal_type,
-                    "asset_name": row[0],
-                    "category_id": row[1],
-                    "user_department": "",
-                    "date": row[3],
+                    "action": action,
+                    "asset_name": asset_name,
+                    "category_id": category_id,
+                    "user_department": str(user_department) if user_department else "N/A",
+                    "date": timestamp,
                     "details": details
                 })
-
-            # Sort history by date (newest first)
-            self.history_data.sort(key=lambda x: x["date"], reverse=True)
 
         except mysql.connector.Error as err:
             print(f"Error fetching history: {err}")
@@ -222,7 +191,7 @@ class HistoryTable(ft.Container):
         """Populate the DataTable with history data."""
         for entry in self.history_data:
             category_name = self.category_map.get(entry["category_id"], "Unknown")
-            date_str = entry["date"].strftime("%Y-%m-%d") if isinstance(entry["date"], datetime) else str(entry["date"])
+            date_str = entry["date"].strftime("%Y-%m-%d %H:%M:%S") if isinstance(entry["date"], datetime) else str(entry["date"])
             
             self.data_table.rows.append(
                 ft.DataRow(
@@ -233,17 +202,15 @@ class HistoryTable(ft.Container):
                                 size=14,
                                 color={
                                     "Added": ft.Colors.GREEN_700,
-                                    "Deployed": ft.Colors.BLUE_700,
-                                    "Scrapped": ft.Colors.ORANGE_700,
-                                    "Disposed": ft.Colors.RED_700,
-                                    "Sold": ft.Colors.PURPLE_700,
+                                    "Updated": ft.Colors.BLUE_700,
+                                    "Deleted": ft.Colors.RED_700,
                                 }.get(entry["action"], ft.Colors.GREY_700),
                                 weight=ft.FontWeight.BOLD,
                             )
                         ),
                         ft.DataCell(ft.Text(entry["asset_name"], size=14, color=ft.Colors.BLACK87)),
                         ft.DataCell(ft.Text(category_name, size=14, color=ft.Colors.BLACK87)),
-                        ft.DataCell(ft.Text(entry["user_department"] or "N/A", size=14, color=ft.Colors.BLACK87)),
+                        ft.DataCell(ft.Text(entry["user_department"], size=14, color=ft.Colors.BLACK87)),
                         ft.DataCell(ft.Text(date_str, size=14, color=ft.Colors.BLACK87)),
                         ft.DataCell(ft.Text(entry["details"], size=14, color=ft.Colors.GREY_800)),
                     ]
