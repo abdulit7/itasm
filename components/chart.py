@@ -39,7 +39,7 @@ class ChartPage(ft.Container):
         def fetch_chart_data():
             try:
                 connection = mysql.connector.connect(
-                    host="200.200.200.23",
+                    host="200.200.201.100",
                     user="root",
                     password="Pak@123",
                     database="asm_sys"

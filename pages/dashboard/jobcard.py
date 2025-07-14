@@ -65,7 +65,7 @@ class JobCardPage(ft.Container):
 
     def load_departments(self):
         db_config = {
-            "host": "200.200.200.23",
+            "host": "200.200.201.100",
             "user": "root",
             "password": "Pak@123",
             "database": "asm_sys"
@@ -87,7 +87,7 @@ class JobCardPage(ft.Container):
 
     def load_deployed_entities(self):
         db_config = {
-            "host": "200.200.200.23",
+            "host": "200.200.201.100",
             "user": "root",
             "password": "Pak@123",
             "database": "asm_sys"
@@ -130,7 +130,7 @@ class JobCardPage(ft.Container):
     def load_job_cards(self):
         self.job_cards = []
         db_config = {
-            "host": "200.200.200.23",
+            "host": "200.200.201.100",
             "user": "root",
             "password": "Pak@123",
             "database": "asm_sys"
@@ -165,7 +165,7 @@ class JobCardPage(ft.Container):
 
     def get_entity_info(self, entity_type, entity_id):
         db_config = {
-            "host": "200.200.200.23",
+            "host": "200.200.201.100",
             "user": "root",
             "password": "Pak@123",
             "database": "asm_sys"
@@ -467,7 +467,7 @@ class JobCardPage(ft.Container):
             return
 
         db_config = {
-            "host": "200.200.200.23",
+            "host": "200.200.201.100",
             "user": "root",
             "password": "Pak@123",
             "database": "asm_sys"
@@ -501,7 +501,7 @@ class JobCardPage(ft.Container):
 
     def start_job_card(self, job_card):
         db_config = {
-            "host": "200.200.200.23",
+            "host": "200.200.201.100",
             "user": "root",
             "password": "Pak@123",
             "database": "asm_sys"
@@ -664,7 +664,7 @@ class JobCardPage(ft.Container):
             return
 
         db_config = {
-            "host": "200.200.200.23",
+            "host": "200.200.201.100",
             "user": "root",
             "password": "Pak@123",
             "database": "asm_sys"

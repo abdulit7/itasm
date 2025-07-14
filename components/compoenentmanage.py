@@ -120,7 +120,7 @@ class ComponentManage:
         """Fetch users, departments, and assets for dropdowns."""
         try:
             conn = mysql.connector.connect(
-                host="200.200.200.23",
+                host="200.200.201.100",
                 user="root",
                 password="Pak@123",
                 database="asm_sys"
@@ -166,7 +166,7 @@ class ComponentManage:
 
         try:
             conn = mysql.connector.connect(
-                host="200.200.200.23",
+                host="200.200.201.100",
                 user="root",
                 password="Pak@123",
                 database="asm_sys"
@@ -281,7 +281,7 @@ class ComponentManage:
 
         try:
             conn = mysql.connector.connect(
-                host="200.200.200.23",
+                host="200.200.201.100",
                 user="root",
                 password="Pak@123",
                 database="asm_sys"

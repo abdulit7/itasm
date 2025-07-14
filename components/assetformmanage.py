@@ -10,7 +10,7 @@ class AssetFormManage:
         self.parent = parent  # Store the parent (AssetPage) for reload, if provided
         self.all_users = []  # Store all users for filtering later
         self.db_config = {
-            "host": "200.200.200.23",
+            "host": "200.200.201.100",
             "user": "root",
             "password": "Pak@123",
             "database": "asm_sys"

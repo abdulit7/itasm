@@ -89,7 +89,7 @@ class Department(ft.Container):
         """Connect to the MySQL database and return the connection."""
         try:
             connection = mysql.connector.connect(
-                host="200.200.200.23",  # Database server
+                host="200.200.201.100",  # Database server
                 user="root",  # Database user
                 password="Pak@123",  # Database password
                 database="asm_sys",  # Database name

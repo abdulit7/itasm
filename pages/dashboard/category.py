@@ -128,13 +128,13 @@ class Category(ft.Container):
         """Establish and return a database connection."""
         try:
             connection = mysql.connector.connect(
-                host="200.200.200.23",
+                host="200.200.201.100",
                 user="root",
                 password="Pak@123",
                 database="asm_sys",
                 auth_plugin='mysql_native_password'
             )
-            print("Database connection successful")
+            #print("Database connection successful")
             return connection
         except mysql.connector.Error as error:
             print(f"Database connection failed: {error}")

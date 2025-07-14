@@ -53,7 +53,7 @@ class CompoListScroll(ft.Container):
         """Fetch the total number of assets in the database."""
         try:
             connection = mysql.connector.connect(
-                host="200.200.200.23",
+                host="200.200.201.100",
                 user="root",
                 password="Pak@123",
                 database="itasset",
@@ -81,7 +81,7 @@ class CompoListScroll(ft.Container):
         """Fetch a single asset by its row number (using LIMIT and OFFSET)."""
         try:
             connection = mysql.connector.connect(
-                host="200.200.200.23",
+                host="200.200.201.100",
                 user="root",
                 password="Pak@123",
                 database="itasset",

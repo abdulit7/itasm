@@ -159,7 +159,7 @@ class PrintersPage(ft.Container):
         )
 
     def load_printers(self):
-        db_config = {"host": "200.200.200.23", "user": "root", "password": "Pak@123", "database": "asm_sys"}
+        db_config = {"host": "200.200.201.100", "user": "root", "password": "Pak@123", "database": "asm_sys"}
         conn = None
         cursor = None
         try:
@@ -182,7 +182,7 @@ class PrintersPage(ft.Container):
                 conn.close()
 
     def load_cartridges(self):
-        db_config = {"host": "200.200.200.23", "user": "root", "password": "Pak@123", "database": "asm_sys"}
+        db_config = {"host": "200.200.201.100", "user": "root", "password": "Pak@123", "database": "asm_sys"}
         conn = None
         cursor = None
         try:
@@ -225,7 +225,7 @@ class PrintersPage(ft.Container):
         self.page.update()
 
     def submit_printer(self, e):
-        db_config = {"host": "200.200.200.23", "user": "root", "password": "Pak@123", "database": "asm_sys"}
+        db_config = {"host": "200.200.201.100", "user": "root", "password": "Pak@123", "database": "asm_sys"}
         conn = None
         cursor = None
         try:
@@ -267,7 +267,7 @@ class PrintersPage(ft.Container):
 
     def show_edit_printer_form(self, printer_id):
         departments = self._get_departments()
-        db_config = {"host": "200.200.200.23", "user": "root", "password": "Pak@123", "database": "asm_sys"}
+        db_config = {"host": "200.200.201.100", "user": "root", "password": "Pak@123", "database": "asm_sys"}
         conn = None
         cursor = None
         try:
@@ -310,7 +310,7 @@ class PrintersPage(ft.Container):
                 conn.close()
 
     def update_printer(self, e, printer_id):
-        db_config = {"host": "200.200.200.23", "user": "root", "password": "Pak@123", "database": "asm_sys"}
+        db_config = {"host": "200.200.201.100", "user": "root", "password": "Pak@123", "database": "asm_sys"}
         conn = None
         cursor = None
         try:
@@ -351,7 +351,7 @@ class PrintersPage(ft.Container):
                 conn.close()
 
     def delete_printer(self, printer_id):
-        db_config = {"host": "200.200.200.23", "user": "root", "password": "Pak@123", "database": "asm_sys"}
+        db_config = {"host": "200.200.201.100", "user": "root", "password": "Pak@123", "database": "asm_sys"}
         conn = None
         cursor = None
         try:
@@ -385,7 +385,7 @@ class PrintersPage(ft.Container):
         self.page.update()
 
     def submit_cartridge(self, e):
-        db_config = {"host": "200.200.200.23", "user": "root", "password": "Pak@123", "database": "asm_sys"}
+        db_config = {"host": "200.200.201.100", "user": "root", "password": "Pak@123", "database": "asm_sys"}
         conn = None
         cursor = None
         try:
@@ -415,7 +415,7 @@ class PrintersPage(ft.Container):
                 conn.close()
 
     def show_edit_cartridge_form(self, cartridge_id):
-        db_config = {"host": "200.200.200.23", "user": "root", "password": "Pak@123", "database": "asm_sys"}
+        db_config = {"host": "200.200.201.100", "user": "root", "password": "Pak@123", "database": "asm_sys"}
         conn = None
         cursor = None
         try:
@@ -448,7 +448,7 @@ class PrintersPage(ft.Container):
                 conn.close()
 
     def update_cartridge(self, e, cartridge_id):
-        db_config = {"host": "200.200.200.23", "user": "root", "password": "Pak@123", "database": "asm_sys"}
+        db_config = {"host": "200.200.201.100", "user": "root", "password": "Pak@123", "database": "asm_sys"}
         conn = None
         cursor = None
         try:
@@ -478,7 +478,7 @@ class PrintersPage(ft.Container):
                 conn.close()
 
     def delete_cartridge(self, cartridge_id):
-        db_config = {"host": "200.200.200.23", "user": "root", "password": "Pak@123", "database": "asm_sys"}
+        db_config = {"host": "200.200.201.100", "user": "root", "password": "Pak@123", "database": "asm_sys"}
         conn = None
         cursor = None
         try:
@@ -497,7 +497,7 @@ class PrintersPage(ft.Container):
                 conn.close()
 
     def _get_departments(self):
-        db_config = {"host": "200.200.200.23", "user": "root", "password": "Pak@123", "database": "asm_sys"}
+        db_config = {"host": "200.200.201.100", "user": "root", "password": "Pak@123", "database": "asm_sys"}
         departments = []
         conn = None
         cursor = None

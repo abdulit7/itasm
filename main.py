@@ -150,8 +150,8 @@ ft.app(
     target=main,
     assets_dir="assets",
     upload_dir=temp_dir,
-    view=None,
+    #view=None,
     route_url_strategy="hash",
-    port=8080,
-    host="0.0.0.0",
+    #port=8080,
+    #host="0.0.0.0",
 )

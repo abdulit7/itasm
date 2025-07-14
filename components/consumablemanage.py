@@ -85,7 +85,7 @@ class ConsumableManage(ft.Container):
         self.page.overlay.extend([self.error_popup, self.success_popup])
 
     def load_printers(self):
-        db_config = {"host": "200.200.200.23", "user": "root", "password": "Pak@123", "database": "asm_sys"}
+        db_config = {"host": "200.200.201.100", "user": "root", "password": "Pak@123", "database": "asm_sys"}
         try:
             with mysql.connector.connect(**db_config) as conn:
                 with conn.cursor(dictionary=True) as cursor:
@@ -113,7 +113,7 @@ class ConsumableManage(ft.Container):
         self.consumable_id = consumable_id
         self.load_printers()
 
-        db_config = {"host": "200.200.200.23", "user": "root", "password": "Pak@123", "database": "asm_sys"}
+        db_config = {"host": "200.200.201.100", "user": "root", "password": "Pak@123", "database": "asm_sys"}
         try:
             with mysql.connector.connect(**db_config) as conn:
                 with conn.cursor(dictionary=True) as cursor:
@@ -150,7 +150,7 @@ class ConsumableManage(ft.Container):
         self.page.update()
 
     def save_data(self, e):
-        db_config = {"host": "200.200.200.23", "user": "root", "password": "Pak@123", "database": "asm_sys"}
+        db_config = {"host": "200.200.201.100", "user": "root", "password": "Pak@123", "database": "asm_sys"}
         try:
             with mysql.connector.connect(**db_config) as conn:
                 with conn.cursor() as cursor:

@@ -142,7 +142,7 @@ class ManageSaleDialog:
             return
 
         db_config = {
-            "host": "200.200.200.23",
+            "host": "200.200.201.100",
             "user": "root",
             "password": "Pak@123",
             "database": "asm_sys"
@@ -251,7 +251,7 @@ class ManageSaleDialog:
         self.clear_fields()
         if self.serial_number:
             db_config = {
-                "host": "200.200.200.23",
+                "host": "200.200.201.100",
                 "user": "root",
                 "password": "Pak@123",
                 "database": "asm_sys"

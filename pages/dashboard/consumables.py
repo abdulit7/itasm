@@ -94,7 +94,7 @@ class Consumables(ft.Container):
 
     def load_consumables(self):
         self.consumables_list = []
-        db_config = {"host": "200.200.200.23", "user": "root", "password": "Pak@123", "database": "asm_sys"}
+        db_config = {"host": "200.200.201.100", "user": "root", "password": "Pak@123", "database": "asm_sys"}
         conn = None
         cursor = None
         try:
@@ -309,7 +309,7 @@ class Consumables(ft.Container):
         if not description:
             self.show_snack_bar("Please enter a description.", ft.Colors.RED_800)
             return
-        db_config = {"host": "200.200.200.23", "user": "root", "password": "Pak@123", "database": "asm_sys"}
+        db_config = {"host": "200.200.201.100", "user": "root", "password": "Pak@123", "database": "asm_sys"}
         conn = None
         cursor = None
         try:
@@ -354,7 +354,7 @@ class Consumables(ft.Container):
         if not printer_id:
             self.show_snack_bar("Please select a printer.", ft.Colors.RED_800)
             return
-        db_config = {"host": "200.200.200.23", "user": "root", "password": "Pak@123", "database": "asm_sys"}
+        db_config = {"host": "200.200.201.100", "user": "root", "password": "Pak@123", "database": "asm_sys"}
         conn = None
         cursor = None
         try:
@@ -404,7 +404,7 @@ class Consumables(ft.Container):
                 conn.close()
 
     def populate_printers(self):
-        db_config = {"host": "200.200.200.23", "user": "root", "password": "Pak@123", "database": "asm_sys"}
+        db_config = {"host": "200.200.201.100", "user": "root", "password": "Pak@123", "database": "asm_sys"}
         conn = None
         cursor = None
         try:
@@ -427,7 +427,7 @@ class Consumables(ft.Container):
     def get_printer_serial(self, printer_id):
         if not printer_id:
             return None
-        db_config = {"host": "200.200.200.23", "user": "root", "password": "Pak@123", "database": "asm_sys"}
+        db_config = {"host": "200.200.201.100", "user": "root", "password": "Pak@123", "database": "asm_sys"}
         conn = None
         cursor = None
         try:

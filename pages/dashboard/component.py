@@ -19,7 +19,7 @@ class Component(ft.Container):
 
         # Database configuration
         db_config = {
-            "host": "200.200.200.23",
+            "host": "200.200.201.100",
             "user": "root",
             "password": "Pak@123",
             "database": "asm_sys"
@@ -70,6 +70,14 @@ class Component(ft.Container):
             width=160,
             height=50,
             on_click=lambda e: self.add_component_dialog.open_dialog()
+        )
+        self.component_category = ft.Dropdown(
+            options=[
+                ft.dropdown.Option(key="default", text="Select Category")  # Default option
+            ],
+            width=200,
+            hint_text="Select Category",
+            on_change=self.on_category_change  # Trigger filter or reload on change
         )
 
         self.component_detail = ft.AlertDialog(
@@ -194,7 +202,8 @@ class Component(ft.Container):
                 ft.Row(
                     controls=[
                         ft.Text("Components", size=24, weight=ft.FontWeight.BOLD, color="#263238"),
-                        self.add_component
+                        self.add_component,
+                        self.component_category
                     ],
                     alignment=ft.MainAxisAlignment.START,
                     spacing=20,
@@ -205,12 +214,59 @@ class Component(ft.Container):
             spacing=10
         )
 
+    def load_categories(self):
+        """Load asset categories from the database and populate the dropdown."""
+        self.asset_category.options = [ft.dropdown.Option(key="default", text="Select Category")]  # Reset with default
+        db_config = {
+            "host": "200.200.201.100",
+            "user": "root",
+            "password": "Pak@123",
+            "database": "asm_sys",
+            "buffered": True
+        }
+        conn = None
+        cursor = None
+
+        try:
+            conn = mysql.connector.connect(**db_config)
+            cursor = conn.cursor(dictionary=True)
+            cursor.execute("SELECT id, name FROM category WHERE type = 'component'")  # Adjusted query to use 'name'
+            categories = cursor.fetchall()
+            for category in categories:
+                self.component_category.options.append(
+                    ft.dropdown.Option(key=category['id'], text=category['name'])
+                )
+            self.component_category.update()
+        except Error as e:
+            self.page.snack_bar = ft.SnackBar(
+                content=ft.Text(f"Error loading categories: {e}"),
+                duration=4000
+            )
+            self.page.snack_bar.open = True
+            self.page.update()
+        finally:
+            if cursor:
+                cursor.close()
+            if conn:
+                conn.close()
+    def on_category_change(self, e):
+        """Handle category change to filter components or reload all."""
+        selected_category = self.component_category.value
+        if selected_category == "default":
+            self.load_components()
+        else:
+            self.filter_components_by_category(selected_category)
+    def filter_components_by_category(self, category_id):
+
+        pass
+
+
     def load_components(self):
         """Refresh components from the database."""
         self.components_add = []
         try:
             conn = mysql.connector.connect(
-                host="200.200.200.23",
+                host="200.200.201.100",
                 user="root",
                 password="Pak@123",
                 database="asm_sys"

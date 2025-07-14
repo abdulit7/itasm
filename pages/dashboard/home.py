@@ -70,8 +70,8 @@ class Home(ft.Container):
         jobcard_button = create_button("Job Card", "WORK", "/jobcard", ft.Colors.BLUE_600, ft.Colors.BLUE_GREY_300)
         asset_button = create_button("Asset", "COMPUTER", "/asset", ft.Colors.YELLOW_ACCENT_700, ft.Colors.CYAN_900)
         component_button = create_button("Component", "PIE_CHART", "/component", ft.Colors.TEAL_ACCENT_700, ft.Colors.TEAL_ACCENT)
-        device_button = create_button("SaleForce Device", "DEVICE_HUB", "/device", ft.Colors.GREEN_ACCENT_700, ft.Colors.LIGHT_GREEN_400)
-        consumeable_button = create_button("Consumable", "INVENTORY", "/consumeable", ft.Colors.RED_ACCENT, ft.Colors.TEAL_ACCENT_400)
+        device_button = create_button("SaleForce Device", "DEVICE_HUB", "/saleforce", ft.Colors.GREEN_ACCENT_700, ft.Colors.LIGHT_GREEN_400)
+        consumeable_button = create_button("Consumable", "INVENTORY", "/consumable", ft.Colors.RED_ACCENT, ft.Colors.TEAL_ACCENT_400)
 
         # Styled header
         # header = ft.Container(

@@ -147,7 +147,7 @@ class ConsumableForm(ft.Container):
             self.load_existing_consumable()
 
     def load_cartridges(self):
-        db_config = {"host": "200.200.200.23", "user": "root", "password": "Pak@123", "database": "asm_sys"}
+        db_config = {"host": "200.200.201.100", "user": "root", "password": "Pak@123", "database": "asm_sys"}
         conn = None
         cursor = None
         try:
@@ -168,7 +168,7 @@ class ConsumableForm(ft.Container):
                 conn.close()
 
     def load_printers(self):
-        db_config = {"host": "200.200.200.23", "user": "root", "password": "Pak@123", "database": "asm_sys"}
+        db_config = {"host": "200.200.201.100", "user": "root", "password": "Pak@123", "database": "asm_sys"}
         conn = None
         cursor = None
         try:
@@ -189,7 +189,7 @@ class ConsumableForm(ft.Container):
                 conn.close()
 
     def load_existing_consumable(self):
-        db_config = {"host": "200.200.200.23", "user": "root", "password": "Pak@123", "database": "asm_sys"}
+        db_config = {"host": "200.200.201.100", "user": "root", "password": "Pak@123", "database": "asm_sys"}
         conn = None
         cursor = None
         try:
@@ -390,7 +390,7 @@ class ConsumableForm(ft.Container):
         if not cartridge_id:
             self.page.update()
             return
-        db_config = {"host": "200.200.200.23", "user": "root", "password": "Pak@123", "database": "asm_sys"}
+        db_config = {"host": "200.200.201.100", "user": "root", "password": "Pak@123", "database": "asm_sys"}
         conn = None
         cursor = None
         try:
@@ -416,7 +416,7 @@ class ConsumableForm(ft.Container):
                 conn.close()
 
     def save_consumable(self, e):
-        db_config = {"host": "200.200.200.23", "user": "root", "password": "Pak@123", "database": "asm_sys"}
+        db_config = {"host": "200.200.201.100", "user": "root", "password": "Pak@123", "database": "asm_sys"}
         conn = None
         cursor = None
         try:

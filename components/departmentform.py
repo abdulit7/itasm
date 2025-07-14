@@ -61,7 +61,7 @@ class DepartDialog:
         """Establish and return a database connection."""
         try:
             connection = mysql.connector.connect(
-                host="200.200.200.23",
+                host="200.200.201.100",
                 user="root",
                 password="Pak@123",
                 database="asm_sys",
